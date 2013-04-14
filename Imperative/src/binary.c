@@ -24,7 +24,7 @@ binarysearch(int arr[], int value, size_t low, size_t high)
 int
 BinarySearch(int arr[], int value, size_t size)
 {
-	return binarysearch(arr, value, 0, size-1);
+	return binarysearch(arr, value, 0, size);
 
 }
 
