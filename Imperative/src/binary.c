@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <binary.h>
 int
 binarysearch(int arr[], int value, size_t low, size_t high)
 {
@@ -28,10 +28,3 @@ BinarySearch(int arr[], int value, size_t size)
 
 }
 
-int
-main(void)
-{
-	int array[10] = {1,2,3,4,5,6,7,8,9};
-	int index = BinarySearch(array, 7, 10);
-	printf("Found %d: %d\n", 7, index);
-}

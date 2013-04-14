@@ -29,6 +29,7 @@ getGVertices(Graph v _) = v
 addEdge :: Graph -> Int -> Int -> Graph
 addEdge (Graph x b) v w = Graph x (Bag (setIndex w v(setIndex v w (initList (length x) (getBVertices b)))) )
 
+-- Initalizes matrix with empty lists --
 initList :: Int -> [Vertices] -> [Vertices]
 initList n as = 
   let 
@@ -38,9 +39,34 @@ initList n as =
       then initList n (as ++ xs)
       else as
 
+-- Array set Index function --
 setIndex :: Int -> Int -> [Vertices] -> [Vertices]
-
 setIndex n v xs = if length(xs) < n || null xs
 		     then initList n xs
-		     else (take (n-1) xs) ++ [[v]] ++ (drop (n) xs)
+		     else (take (n-1) xs) ++ [(xs!!(n-1))++[v]] ++ (drop (n) xs)
 
+-- get degree of a point --
+degree :: Graph -> Int -> Int
+degree (Graph _ (Bag [])) n = 0
+degree (Graph x (Bag b)) n = if any (==n) x
+                                then length( b!!length(fst(break (==n) (x))))
+                                else 0
+ 
+-- Maximum degree of a graph vertex --
+maxDegree :: Graph -> Int
+maxDegree (Graph _ (Bag [])) = 0
+maxDegree (Graph g (Bag b)) = maximum (map length b)
+
+-- Average degree of all vertices --
+avgDegree :: Graph -> Int
+avgDegree (Graph _ (Bag [])) = 0
+avgDegree (Graph g (Bag b)) = div (sum (map length b)) (length g)
+
+-- self Loops exists in a graph --
+selfLoops :: Graph -> Int
+selfLoops (Graph _ (Bag [])) = 0
+selfLoops (Graph g (Bag b)) = selfLoopsHelper (Graph g (Bag (b))) ((length g)-1)*(length g)
+
+selfLoopsHelper (Graph g(Bag(a:b))) n = if null b
+					   then length(filter (==(g!!n)) a)
+				  	   else length(filter (==(g!!n)) a) +  selfLoopsHelper (Graph g (Bag b)) (n-1)
