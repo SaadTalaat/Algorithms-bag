@@ -10,12 +10,14 @@ class Path():
 	def __init__(self, graph, vertex):
 		if not isinstance(graph, Graph):
 			return None
+		if graph.getIndex(vertex) == None:
+			return None
 		self.__origin = vertex
+		self.__graph = graph
 		for i in range(0, graph.Size()):
 			self.__visited.append(False)
 			self.__edgeTo.append(None)
-			self.__graph = graph
-
+		self.Search()
 	def __depthFirst(self, s):
 		if not s in self.__graph.vertices:
 			return
@@ -30,20 +32,18 @@ class Path():
 	def Search(self):
 		self.__depthFirst(self.__origin)
 
+	#if we've been there there's definitely a path
 	def hasPathTo(self,vertex):
-		x = False
+		return self.__visited[self.__graph.getIndex(vertex)]
+
+	#return array of vertexes to go through
+	def pathTo(self,vertex):
 		if self.__edgeTo[self.__graph.getIndex(vertex)] == None and not self.__visited[self.__graph.getIndex(vertex)]:
-			print "Equals to None and not visited"
-			return False
+			return [None]
 		elif self.__edgeTo[self.__graph.getIndex(vertex)] == None and self.__visited[self.__graph.getIndex(vertex)]:
-			return True
-		return self.hasPathTo(self.__edgeTo[self.__graph.getIndex(vertex)])
-g = Graph(range(0,1000))
+			return [vertex]
+			#if no path then we cannot append to None
+		x = self.pathTo(self.__edgeTo[self.__graph.getIndex(vertex)])
+		x.append(vertex)
+		return x
 
-for i  in range(0,1000):
-	g.addEdge(random.randint(0,1000),random.randint(0,1000))
-
-p = Path(g,random.randint(0,1000))
-p.Search()
-x = p.hasPathTo(random.randint(0,1000))
-print x
