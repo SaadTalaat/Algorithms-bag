@@ -154,5 +154,5 @@ selfLoops(graph *g)
 					count++;
 				}
 			}
-	return count;
+	return count/2;
 }
