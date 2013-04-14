@@ -1,6 +1,7 @@
 
 #ifndef _ALGO_GRAPH_H_
 #define _ALGO_GRAPH_H_
+#include <binary.h>
 typedef unsigned int vertex;
 typedef struct _graph{
 	vertex *vertices;

@@ -21,7 +21,7 @@ graphInit(vertex *vertices, size_t vert_count)
 
 	// allocate a space for each vertices
 	g->vertices = (unsigned int *) malloc(vert_count*sizeof(unsigned int));
-	memcpy(vertices,g->vertices, vert_count*sizeof(unsigned int));
+	memcpy(g->vertices,vertices, vert_count*sizeof(unsigned int));
 	
 	// allocate a pointer for each vertex adjList
 	g->adjList = (vertex **) malloc(sizeof(void *)*vert_count);
@@ -55,13 +55,16 @@ addEdge(graph *g, vertex v1, vertex v2)
 	j = BinarySearch(g->vertices, v2, g->vertCount);
 
 	if(i == -1 || j == -1)
+	{
 		return;
+	}
 	if(g->adjList[i] == NULL)
 	{
 		// initalize list size with one entry position
 		g->adjList[i] = (unsigned int *) malloc(sizeof(unsigned int));
 		g->adjSize[i] = 1;
-		g->adjList[i][g->adjSize[i]-1] = v2;
+	//	printf("AdjList of %d = %d\n",i,v2);
+		g->adjList[i][0] = v2;
 	}
 	else
 	{
@@ -73,13 +76,12 @@ addEdge(graph *g, vertex v1, vertex v2)
 		g->adjList[i][g->adjSize[i]] = v2;
 		g->adjSize[i] ++;
 	}
-
         if(g->adjList[j] == NULL)
         {
                 // initalize list size with one entry position
                 g->adjList[j] = (unsigned int *) malloc(sizeof(unsigned int));
                 g->adjSize[j] = 1;
-                g->adjList[j][g->adjSize[j]-1] = v2;
+                g->adjList[j][0] = v1;
         }
         else    
         {
@@ -88,7 +90,7 @@ addEdge(graph *g, vertex v1, vertex v2)
                 g->adjList[j] = malloc( (g->adjSize[j]*sizeof(unsigned int)) + sizeof(unsigned int));
                 memcpy(g->adjList[j], a, g->adjSize[j]*sizeof(unsigned int));
                 free(a);
-                g->adjList[j][g->adjSize[j]] = v2;
+                g->adjList[j][g->adjSize[j]] = v1;
                 g->adjSize[j] ++;
         }
 
@@ -102,7 +104,10 @@ vectDegree(graph *g, vertex v)
 		return;
 	i = BinarySearch(g->vertices, v, g->vertCount);
 	if( i == -1)
+	{
+		printf("Invalid\n");
 		return -1;
+	}
 	return g->adjSize[i];
 }
 
@@ -136,13 +141,18 @@ avgDegree(graph *g)
 int
 selfLoops(graph *g)
 {
-	int i,j,count;
+	int i,j,count=0;
+	vertex v,a;
 	if(g == NULL)
 		return -1;
-	for(i = 0; i < g->vertCount; i++)
+	for(i = 0,v = g->vertices[i]; i < g->vertCount; i++,v = g->vertices[i])
 		if(g->adjList[i] != NULL)
-			for( j=0; j < g->adjSize[i]; j++)
-				if(g->adjList[i][j] == g->vertices[i])
+			for( j=0,a=g->adjList[i][j]; j < g->adjSize[i]; j++,a=g->adjList[i][j])
+			{
+				if(v == a)
+				{
 					count++;
+				}
+			}
 	return count;
 }
