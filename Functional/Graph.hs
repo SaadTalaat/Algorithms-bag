@@ -1,4 +1,14 @@
 
+module Graph(
+	     Graph(..),
+	     Bag(..),
+	     getBag,
+	     degree,
+	     addEdge,
+	     maxDegree,
+	     avgDegree,
+	     selfLoops
+	    ) where
 
 -- A simple Graph --
 
@@ -65,8 +75,8 @@ avgDegree (Graph g (Bag b)) = div (sum (map length b)) (length g)
 -- self Loops exists in a graph --
 selfLoops :: Graph -> Int
 selfLoops (Graph _ (Bag [])) = 0
-selfLoops (Graph g (Bag b)) = selfLoopsHelper (Graph g (Bag (b))) ((length g)-1)*(length g)
+selfLoops (Graph g (Bag b)) = selfLoopsHelper (Graph g (Bag (b))) 0 ((length g)-1) -- *(length g)
 
-selfLoopsHelper (Graph g(Bag(a:b))) n = if null b
-					   then length(filter (==(g!!n)) a)
-				  	   else length(filter (==(g!!n)) a) +  selfLoopsHelper (Graph g (Bag b)) (n-1)
+selfLoopsHelper (Graph g(Bag(a:b))) s n = if null b || s >= n
+					   then length(filter (==(g!!s)) a)
+				  	   else length(filter (==(g!!s)) a) +  (selfLoopsHelper (Graph g (Bag b)) (s+1)(n-1))
