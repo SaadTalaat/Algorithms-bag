@@ -15,5 +15,5 @@ int vectDegree(graph *g, vertex v);
 int maxDegree(graph *g);
 int avgDegree(graph *g);
 int selfLoops(graph *g);
-
+vertex *getAdj(graph *g, vertex);
 #endif

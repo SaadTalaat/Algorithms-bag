@@ -33,7 +33,15 @@ graphInit(vertex *vertices, size_t vert_count)
 	g->vertCount = vert_count;
 	return g;
 }
-
+vertex *
+getAdj(graph *g, vertex v)
+{
+	int ss;
+	ss = BinarySearch(g->vertices, v, g->vertCount);
+	if(ss == -1)
+		return NULL;
+	return g->adjList[ss];
+}
 
 void
 addEdge(graph *g, vertex v1, vertex v2)
