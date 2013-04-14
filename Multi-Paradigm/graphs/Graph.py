@@ -34,11 +34,10 @@ class Graph(object):
 
 	def selfLoops(self):
 		countv = 0
-		for i in self.vertices:
-			for j in self.adjList:
-				countv += j.count(i)
+		for i in range (0,len(self.vertices)):
+			countv += self.adjList[i].count(self.vertices[i])
 
-		return countv
+		return countv/2
 	def getAdj(self):
 		return self.adjList
 
@@ -54,3 +53,4 @@ class Graph(object):
 	def getIndex(self, vertex):
 		if vertex in self.vertices:
 			return self.vertices.index(vertex)
+

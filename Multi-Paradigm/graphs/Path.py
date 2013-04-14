@@ -37,13 +37,32 @@ class Path():
 		return self.__visited[self.__graph.getIndex(vertex)]
 
 	#return array of vertexes to go through
+	# Loop implementation to find Path
+	# to work on big graphs
+	# Thanks python recursion limit...
 	def pathTo(self,vertex):
+		x = []
+		if self.__visited[self.__graph.getIndex(vertex) ] == False:
+			return x
+
+		x.append(vertex)
+		i = self.__graph.getIndex(vertex)
+		while self.__edgeTo[i] != None:
+			x.append(self.__edgeTo[i])
+			i = self.__graph.getIndex(self.__edgeTo[i])
+		x.reverse()
+		return x
+
+	# Recursive version of find Path
+	# doesn't work on big graphs
+	# Recursion in python limited
+	# to 990
+	def rpathTo(self,vertex):
 		if self.__edgeTo[self.__graph.getIndex(vertex)] == None and not self.__visited[self.__graph.getIndex(vertex)]:
 			return [None]
 		elif self.__edgeTo[self.__graph.getIndex(vertex)] == None and self.__visited[self.__graph.getIndex(vertex)]:
 			return [vertex]
 			#if no path then we cannot append to None
-		x = self.pathTo(self.__edgeTo[self.__graph.getIndex(vertex)])
+		x = self.rpathTo(self.__edgeTo[self.__graph.getIndex(vertex)])
 		x.append(vertex)
 		return x
-
