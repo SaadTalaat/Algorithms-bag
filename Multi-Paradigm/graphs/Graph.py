@@ -20,7 +20,15 @@ class Graph(object):
 			return 
 		self.adjList[self.vertices.index(vertex1)].append(vertex2)
 		self.adjList[self.vertices.index(vertex2)].append(vertex1)
-		
+
+	def addVertex(self, vertex):
+		if vertex in self.vertices:
+			return False
+		self.vertices.append(vertex)
+		self.vertices.sort()
+		self.adjList.append([])
+		return True	
+
 	def degree(self, vertex):
 		if not(vertex in self.vertices):
 			return 0
